@@ -5,6 +5,9 @@ from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.preprocessing import StandardScaler
+import numpy as np
+from sklearn.impute import SimpleImputer
+
 
 # Load the data
 df = pd.read_csv('E_commerce_Dataset.csv')
@@ -12,14 +15,26 @@ df = pd.read_csv('E_commerce_Dataset.csv')
 # Preprocess the data
 df['Product'] = pd.Categorical(df['Product']).codes
 df['Product_Category'] = pd.Categorical(df['Product_Category']).codes
-df['Time'] = pd.to_datetime(df['Time'])
-df['Day'] = df['Time'].dt.day
-df['Month'] = df['Time'].dt.month
-df['Year'] = df['Time'].dt.year
+df['Order_Date'] = pd.to_datetime(df['Order_Date'], dayfirst=True, errors='coerce')
+df['Day'] = df['Order_Date'].dt.day
+df['Month'] = df['Order_Date'].dt.month
+df['Year'] = df['Order_Date'].dt.year
 
 # Define the features and target
 X = df.drop(['Sales'], axis=1)
 y = df['Sales']
+
+# Drop datetime/string columns that cause issues
+X = X.drop(columns=['Order_Date', 'Time'], errors='ignore')
+
+# Optional: Ensure only numerical data
+X = X.select_dtypes(include=[np.number])
+
+Xy = pd.concat([X, y], axis=1).dropna()
+X = Xy.drop('Sales', axis=1)
+y = Xy['Sales']
+
+
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
