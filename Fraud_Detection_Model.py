@@ -12,7 +12,6 @@ warnings.filterwarnings("ignore")
 
 # Load dataset
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
-
 # --- Define Fraud Label (Rule-based) ---
 # Mark as fraud if:
 # - High discount (> 0.5)
