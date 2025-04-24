@@ -8,12 +8,12 @@ df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
 
 # --- Preprocessing ---
 # Drop duplicates and NaNs just in case
-df = df.dropna(subset=['Customer_ID', 'Product_Name'])
+df = df.dropna(subset=['Customer_Id', 'Product'])
 
 # Create a user-product matrix
 user_product_matrix = df.pivot_table(
-    index='Customer_ID',
-    columns='Product_Name',
+    index='Customer_Id',
+    columns='Product',
     values='Quantity',
     aggfunc='sum',
     fill_value=0
@@ -43,7 +43,7 @@ def recommend_products(customer_id, top_n=5):
     return recommendations
 
 # --- Test the function ---
-sample_customer = df['Customer_ID'].iloc[0]
+sample_customer = df['Customer_Id'].iloc[0]
 recs = recommend_products(sample_customer)
 print(f"🎁 Recommended products for Customer {sample_customer}:\n{recs}")
 
