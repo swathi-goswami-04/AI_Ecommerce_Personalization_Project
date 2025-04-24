@@ -9,15 +9,13 @@ import joblib
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
 
 # Drop nulls in key columns
-df = df.dropna(subset=['InvoiceDate', 'Customer_ID', 'Quantity', 'UnitPrice'])
+df = df.dropna(subset=['Order_Date', 'Customer_Id', 'Quantity', 'Sales'])
 
-# Convert InvoiceDate to datetime
-df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
 # Extract hour from timestamp
-df['Hour'] = df['InvoiceDate'].dt.hour
+df['Order_Date'] = pd.to_datetime(df['Order_Date'], dayfirst=True)
+df['Hour'] = df['Order_Date'].dt.hour
 
-# Create time bins
 def get_time_bin(hour):
     if 6 <= hour < 12:
         return 'Morning'
@@ -29,12 +27,12 @@ def get_time_bin(hour):
         return 'Night'
 
 df['TimeBin'] = df['Hour'].apply(get_time_bin)
+df['TotalAmount'] = df['Sales']
 
-# Features and target
-df['TotalAmount'] = df['Quantity'] * df['UnitPrice']
-features = ['Quantity', 'UnitPrice', 'TotalAmount']
+features = ['Quantity', 'Sales', 'TotalAmount']
 X = df[features]
-y = df['TimeBin']
+y = df['TimeBin'].astype('category').cat.codes
+
 
 # Encode target
 y = y.astype('category').cat.codes  # Morning=0, Afternoon=1, Evening=2, Night=3
