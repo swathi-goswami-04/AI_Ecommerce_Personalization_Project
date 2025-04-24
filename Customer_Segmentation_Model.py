@@ -9,12 +9,13 @@ from sklearn.decomposition import PCA
 from datetime import datetime
 import warnings
 warnings.filterwarnings("ignore")
+from sklearn.impute import SimpleImputer
 
 # Load dataset
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
 
 # Convert date
-df['Order_Date'] = pd.to_datetime(df['Order_Date'])
+df['Order_Date'] = pd.to_datetime(df['Order_Date'], dayfirst=True, errors='coerce')
 
 # Reference date
 today = datetime(2025, 4, 12)
@@ -48,7 +49,9 @@ X = customer_df.drop(['Customer_Id'], axis=1)
 
 # --- Scaling ---
 scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+imputer = SimpleImputer(strategy='mean')
+X_imputed = imputer.fit_transform(X)
+X_scaled = scaler.fit_transform(X_imputed)
 
 # --- Elbow Method to determine K ---
 inertia = []
@@ -98,3 +101,4 @@ joblib.dump(pca, "customer_pca.pkl")
 customer_df.to_csv("segmented_customers.csv", index=False)
 
 print("🎯 Customer segmentation complete. Models and outputs saved!")
+
