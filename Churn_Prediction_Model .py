@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore")
 
 # Load data
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
-df['Order_Date'] = pd.to_datetime(df['Order_Date'])
+df['Order_Date'] = pd.to_datetime(df['Order_Date'], dayfirst=True, errors='coerce')
 
 # Reference date
 today = datetime(2025, 4, 12)
@@ -77,3 +77,4 @@ customer_df['Predicted_Churn'] = clf.predict(scaler.transform(X))
 customer_df.to_csv("customer_churn_predictions.csv", index=False)
 
 print("✅ Churn prediction complete. Model, scaler, and results saved.")
+
