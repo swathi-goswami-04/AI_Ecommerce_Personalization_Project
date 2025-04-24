@@ -8,20 +8,20 @@ import joblib
 # Load dataset
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
 
-# --- Preprocessing ---
-# Drop rows where essential columns are missing
-df = df.dropna(subset=['Quantity', 'UnitPrice', 'Profit'])
+
+# Drop rows where needed
+df = df.dropna(subset=['Quantity', 'Discount', 'Sales', 'Profit'])
 
 # Optional: Create extra features
-df['Total_Sale'] = df['Quantity'] * df['UnitPrice']
+df['Effective_Price'] = df['Sales'] / df['Quantity']  # Be careful of divide-by-zero if Quantity == 0
+df['Total_Discounted_Sale'] = df['Sales'] * (1 - df['Discount'])
 
 # Select features and target
-features = ['Quantity', 'UnitPrice', 'Total_Sale']
+features = ['Quantity', 'Discount', 'Sales', 'Effective_Price', 'Total_Discounted_Sale']
 target = 'Profit'
 
 X = df[features]
 y = df[target]
-
 # Split dataset
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
