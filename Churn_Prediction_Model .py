@@ -67,6 +67,7 @@ print("🎯 Classification Report:\n", classification_report(y_test, y_pred))
 print("🧾 Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 
 # --- Save Artifacts ---
+joblib.dump(X.columns.tolist(), "churn_features.pkl")
 joblib.dump(clf, "churn_rf_model.pkl")
 joblib.dump(scaler, "churn_scaler.pkl")
 
