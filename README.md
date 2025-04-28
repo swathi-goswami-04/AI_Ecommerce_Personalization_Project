@@ -21,3 +21,7 @@ A full-stack ML-powered application combining FastAPI (backend), Streamlit (fron
 git clone https://github.com/swathi-goswami-04/AI_Ecommerce_Personalization_Project.git
 cd AI_Ecommerce_Personalization_Project
 pip install -r requirements.txt
+
+DISCLAIMER!!
+
+Run all the Models first in order to create .pkl file and then proceed with backend and frontend.
