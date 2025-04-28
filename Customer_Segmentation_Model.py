@@ -96,6 +96,7 @@ plt.show()
 joblib.dump(kmeans, "customer_kmeans_model.pkl")
 joblib.dump(scaler, "customer_scaler.pkl")
 joblib.dump(pca, "customer_pca.pkl")
+joblib.dump(X.columns.tolist(), "segment_features.pkl")
 
 # --- Save Segmented Customers ---
 customer_df.to_csv("segmented_customers.csv", index=False)
