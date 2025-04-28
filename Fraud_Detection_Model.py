@@ -12,6 +12,7 @@ warnings.filterwarnings("ignore")
 
 # Load dataset
 df = pd.read_csv("E_commerce_Dataset.csv", encoding='latin1')
+
 # --- Define Fraud Label (Rule-based) ---
 # Mark as fraud if:
 # - High discount (> 0.5)
@@ -52,6 +53,7 @@ print("🧾 Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 # Save model and scaler
 joblib.dump(clf, "fraud_rf_model.pkl")
 joblib.dump(scaler, "fraud_scaler.pkl")
+joblib.dump(X.columns.tolist(), "fraud_features.pkl")
 
 # Save predictions
 df['Predicted_Fraud'] = clf.predict(scaler.transform(X))
